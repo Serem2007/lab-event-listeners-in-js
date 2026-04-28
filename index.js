@@ -1,51 +1,66 @@
 // Handle Button Clicks
 
 // Function to change the background color when a button is clicked
-function changeBackgroundColor() {
-  // Implement the function to change background color
+function changeBackgroundColor() { document.body.style.backgroundColor = "lightblue";
 }
 
 // Function to reset the background color when the body is double-clicked
-function resetBackgroundColor() {
-  // Implement the function to reset background color
+function resetBackgroundColor() {document.body.style.backgroundColor = "white";
 }
 
-// Capture Keyboard Input
-
-// Function to display the key pressed by the user
-function displayKeyPress(event) {
-  // Implement the function to display key pressed
+function displayKeyPress(event) {document.getElementById("keyDisplay").textContent =
+    "You pressed: " + event.key;
 }
 
 // Process Text Input
 
 // Function to display user input in real-time
 function displayUserInput() {
-  // Implement the function to display user input
+const input = document.getElementById("textInput").value;
+  document.getElementById("output").textContent = input;
 }
 
+function combinedInteraction(event) {
+  const display = document.getElementById("combinedOutput");
+
+  if (event.type === "click") {
+    display.textContent = "Button clicked!";
+  } else if (event.type === "keydown") {
+    display.textContent = "Key: " + event.key;
+  } else if (event.type === "input") {
+    display.textContent = "Typing: " + event.target.value;
+  }
+}
 // Attach Event Listeners
-function setupEventListeners() {
-// Attach event listener to change background color when the button is clicked
-  document
-    .getElementById('changeColorButton')
-    .addEventListener('click', changeBackgroundColor)
+function setupEventListeners() {const btn = document.getElementById("colorBtn");
+  const comboBtn = document.getElementById("comboBtn");
+  const inputField = document.getElementById("textInput");
 
-  // Attach event listener to reset background color when the body is double-clicked
-  document
-    .getElementById('resetColorButton')
-    .addEventListener('dblclick', resetBackgroundColor)
+  // Button events
+  if (btn) {
+    btn.addEventListener("click", changeBackgroundColor);
+    btn.addEventListener("dblclick", resetBackgroundColor);
+  }
 
-  // Attach event listener to display key pressed when a key is pressed down
-  document.addEventListener('keydown', displayKeyPress)
+  // Combo button
+  if (comboBtn) {
+    comboBtn.addEventListener("click", combinedInteraction);
+  }
 
-  // Attach event listener to display user input in real-time as they type
-  document.getElementById('textInput').addEventListener('input', displayUserInput)
+  // Input field
+  if (inputField) {
+    inputField.addEventListener("input", displayUserInput);
+    inputField.addEventListener("input", combinedInteraction);
+  }
+
+  // Keyboard events
+  document.addEventListener("keydown", displayKeyPress);
+  document.addEventListener("keydown", combinedInteraction);
 }
 
 // Initialize event listeners when the DOM is loaded
-if (typeof window !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', setupEventListeners)
+if (typeof window !== 'undefined') 
+  { document.addEventListener('DOMContentLoaded', setupEventListeners) document.getElementById("comboBtn") .addEventListener("click", combinedInteraction); document.addEventListener("keydown", combinedInteraction); document.getElementById("textInput") .addEventListener("input", combinedInteraction);
 }
 
 module.exports = {
