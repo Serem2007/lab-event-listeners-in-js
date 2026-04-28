@@ -1,59 +1,66 @@
-// 🔹 Step 1: Handle Button Clicks
-
+// 🔹 Change background to random RGB
 function changeBackgroundColor() {
-  document.body.style.backgroundColor = "lightblue";
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+
+  document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 }
 
+// 🔹 Reset background
 function resetBackgroundColor() {
-  document.body.style.backgroundColor = "white";
+  document.body.style.backgroundColor = "";
 }
 
-// 🔹 Step 2: Capture Keyboard Input
-
+// 🔹 Display key press
 function displayKeyPress(event) {
-  const keyDisplay = document.getElementById("keyDisplay");
-  keyDisplay.textContent = "You pressed: " + event.key;
-}
-
-// 🔹 Step 3: Process Text Input
-
-function displayUserInput() {
-  const input = document.getElementById("textInput").value;
-  document.getElementById("output").textContent = input;
-}
-
-// 🔹 Step 4: Combine Multiple Events
-
-function combinedInteraction(event) {
-  const display = document.getElementById("combinedOutput");
-
-  if (event.type === "click") {
-    display.textContent = "Button clicked!";
-  } else if (event.type === "keydown") {
-    display.textContent = "Key: " + event.key;
-  } else if (event.type === "input") {
-    display.textContent = "Typing: " + event.target.value;
+  const display = document.getElementById("keyPressDisplay");
+  if (display) {
+    display.textContent = "Key pressed: " + event.key;
   }
 }
 
-// 🔹 Attach ALL event listeners
+// 🔹 Display user input
+function displayUserInput() {
+  const input = document.getElementById("textInput");
+  const display = document.getElementById("textInputDisplay");
 
-// Button events
-const btn = document.getElementById("colorBtn");
-btn.addEventListener("click", changeBackgroundColor);
-btn.addEventListener("dblclick", resetBackgroundColor);
+  if (input && display) {
+    display.textContent = "You typed: " + input.value;
+  }
+}
 
-// Keyboard event
-document.addEventListener("keydown", displayKeyPress);
+// 🔹 Setup event listeners (SAFE)
+function setupEventListeners() {
+  const changeBtn = document.getElementById("changeColorButton");
+  const resetBtn = document.getElementById("resetColorButton");
+  const input = document.getElementById("textInput");
 
-// Input event
-const inputField = document.getElementById("textInput");
-inputField.addEventListener("input", displayUserInput);
+  if (changeBtn) {
+    changeBtn.addEventListener("click", changeBackgroundColor);
+  }
 
-// Combined events
-document.getElementById("comboBtn")
-  .addEventListener("click", combinedInteraction);
+  if (resetBtn) {
+    resetBtn.addEventListener("dblclick", resetBackgroundColor);
+  }
 
-document.addEventListener("keydown", combinedInteraction);
+  if (input) {
+    input.addEventListener("input", displayUserInput);
+  }
 
-inputField.addEventListener("input", combinedInteraction);
+  document.addEventListener("keydown", displayKeyPress);
+}
+
+// 🔹 Run only in browser
+if (typeof window !== "undefined") {
+  document.addEventListener("DOMContentLoaded", setupEventListeners);
+}
+
+// 🔹 Export for tests
+module.exports = {
+  changeBackgroundColor,
+  resetBackgroundColor,
+  displayKeyPress,
+  displayUserInput,
+  setupEventListeners
+};
